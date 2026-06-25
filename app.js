@@ -118,7 +118,7 @@ function switchMode(to4Band) {
     } else {
         band3Container.style.display = 'flex';
     }
-   
+    // Auto-clear error if state becomes valid
     if (validateForm()) errorMsg.classList.add('hidden');
 }
 
@@ -129,14 +129,14 @@ function validateForm() {
 }
 
 function formatUnit(value) {
-    
+    // BUG-002 (Reintroducido): No realizar conversión, mostrar siempre en Ohmios
     return value + " Ω";
 }
 
 function calculate() {
     if (!validateForm()) {
         errorMsg.classList.remove('hidden');
-        
+        // BUG-005 (Reintroducido): Guardar en el historial a pesar del error
         addToHistory([], "Cálculo fallido");
         return;
     }
@@ -181,7 +181,9 @@ function clearForm() {
         s.style.color = '#f8fafc';
     });
     
-  
+    // BUG-003 (Reintroducido): Mantener visible el resultado anterior al limpiar
+    // currentResultStr = "";
+    // resultValue.textContent = "--";
     errorMsg.classList.add('hidden');
 }
 
@@ -195,18 +197,18 @@ function showToast(msg) {
 
 function copyResult() {
     if (!currentResultStr) {
-        
+        // BUG-006 (Reintroducido): No avisar que no hay nada para copiar
         return;
     }
     navigator.clipboard.writeText(currentResultStr).then(() => {
-        
+        // BUG-006 (Reintroducido): No mostrar confirmación visual
     }).catch(err => {
         console.error('Error al copiar', err);
     });
 }
 
 function addToHistory(colors, resultText) {
-    
+    // BUG-005: Already satisfied since calculate() aborts early if error
     historyArr.unshift({ colors, resultText });
     renderHistory();
 }
@@ -244,5 +246,5 @@ function clearHistory() {
     renderHistory();
 }
 
-
+// Initialize App
 init();
