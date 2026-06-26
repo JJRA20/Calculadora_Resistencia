@@ -181,7 +181,7 @@ function clearForm() {
         s.style.color = '#f8fafc';
     });
     
-    // BUG-003 (Reintroducido): Mantener visible el resultado anterior al limpiar
+    // BUG-003 (Reintroducido): Mantener visible el resultado anterior al limpiarrr
     // currentResultStr = "";
     // resultValue.textContent = "--";
     errorMsg.classList.add('hidden');

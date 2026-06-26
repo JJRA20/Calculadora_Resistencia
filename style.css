@@ -100,7 +100,7 @@ header h1 {
 
 @media (max-width: 900px) {
     .main-content {
-        /* BUG-004 (Reintroducido): Causar superposición de elementos en móviles */
+        /* BUG-004 (Reintroducido): Causar superposición de elementos en móviless */
         display: block;
     }
     .sidebar {
