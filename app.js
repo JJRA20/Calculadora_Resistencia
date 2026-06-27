@@ -113,4 +113,5 @@ function formatNumber(number) {
     return Number.isInteger(number) ? number.toString() : number.toFixed(2).replace(/\.?0+$/, "");
 }
 
+
 init();
