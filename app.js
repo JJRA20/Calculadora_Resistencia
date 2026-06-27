@@ -20,6 +20,7 @@ const band5 = document.getElementById("band5");
 const summaryText = document.getElementById("summary-text");
 const resultValue = document.getElementById("result-value");
 const btnCalculate = document.getElementById("btn-calculate");
+const btnClear = document.getElementById("btn-clear");
 
 function init() {
     populateSelects();
@@ -60,6 +61,7 @@ function setupEventListeners() {
     });
 
     btnCalculate.addEventListener("click", calculateResistance);
+    btnClear.addEventListener("click", clearForm);
 }
 
 function updateSelectStyle(selectElement) {
@@ -96,6 +98,22 @@ function calculateResistance() {
     const finalValue = baseValue * multiplier;
 
     resultValue.textContent = `${formatUnit(finalValue)} ±${formatNumber(tolerance)}%`;
+}
+
+function clearForm() {
+    document.getElementById("resistor-form").reset();
+
+    [band1, band2, band4, band5].forEach(select => {
+        select.style.backgroundColor = "#0f172a";
+        select.style.color = "#f8fafc";
+    });
+
+    summaryText.textContent = "Aún no se seleccionaron todos los colores.";
+
+    // BUG-003 intencional:
+    // El botón Limpiar borra las bandas seleccionadas,
+    // pero mantiene visible el resultado anterior.
+    // resultValue.textContent = "--";
 }
 
 function formatUnit(value) {
