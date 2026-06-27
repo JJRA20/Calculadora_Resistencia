@@ -90,11 +90,12 @@ function calculateResistance() {
     const digit1 = parseInt(band1.options[band1.selectedIndex].dataset.digit);
     const digit2 = parseInt(band2.options[band2.selectedIndex].dataset.digit);
     const multiplier = parseFloat(band4.options[band4.selectedIndex].dataset.multiplier);
+    const tolerance = parseFloat(band5.options[band5.selectedIndex].dataset.tol);
 
     const baseValue = (digit1 * 10) + digit2;
     const finalValue = baseValue * multiplier;
 
-    resultValue.textContent = formatUnit(finalValue);
+    resultValue.textContent = `${formatUnit(finalValue)} ±${formatNumber(tolerance)}%`;
 }
 
 function formatUnit(value) {
@@ -110,8 +111,7 @@ function formatUnit(value) {
 }
 
 function formatNumber(number) {
-    return Number.isInteger(number) ? number.toString() : number.toFixed(2).replace(/\.?0+$/, "");
+    return Number.isInteger(number) ? number.toString() : number.toFixed(2);
 }
-
 
 init();
