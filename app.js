@@ -18,6 +18,8 @@ const band2 = document.getElementById("band2");
 const band4 = document.getElementById("band4");
 const band5 = document.getElementById("band5");
 const summaryText = document.getElementById("summary-text");
+const resultValue = document.getElementById("result-value");
+const btnCalculate = document.getElementById("btn-calculate");
 
 function init() {
     populateSelects();
@@ -29,19 +31,21 @@ function populateSelects() {
     const multiplierColors = colorData.filter(color => color.multiplier !== null);
     const toleranceColors = colorData.filter(color => color.tol !== null);
 
-    populateSelect(band1, digitColors);
-    populateSelect(band2, digitColors);
-    populateSelect(band4, multiplierColors);
-    populateSelect(band5, toleranceColors);
+    populateSelect(band1, digitColors, "digit");
+    populateSelect(band2, digitColors, "digit");
+    populateSelect(band4, multiplierColors, "multiplier");
+    populateSelect(band5, toleranceColors, "tol");
 }
 
-function populateSelect(selectElement, options) {
+function populateSelect(selectElement, options, type) {
     options.forEach(color => {
         const option = document.createElement("option");
         option.value = color.name;
         option.textContent = color.name;
         option.style.backgroundColor = color.hex;
         option.style.color = color.textDark ? "#000000" : "#ffffff";
+        option.dataset[type] = color[type];
+        option.dataset.hex = color.hex;
 
         selectElement.appendChild(option);
     });
@@ -54,6 +58,8 @@ function setupEventListeners() {
             updateSummary();
         });
     });
+
+    btnCalculate.addEventListener("click", calculateResistance);
 }
 
 function updateSelectStyle(selectElement) {
@@ -73,6 +79,29 @@ function updateSummary() {
     } else {
         summaryText.textContent = "Aún no se seleccionaron todos los colores.";
     }
+}
+
+function calculateResistance() {
+    if (!band1.value || !band2.value || !band4.value || !band5.value) {
+        resultValue.textContent = "Complete todas las bandas";
+        return;
+    }
+
+    const digit1 = parseInt(band1.options[band1.selectedIndex].dataset.digit);
+    const digit2 = parseInt(band2.options[band2.selectedIndex].dataset.digit);
+    const multiplier = parseFloat(band4.options[band4.selectedIndex].dataset.multiplier);
+
+    const baseValue = (digit1 * 10) + digit2;
+    const finalValue = baseValue * multiplier;
+
+    resultValue.textContent = formatUnit(finalValue);
+}
+
+function formatUnit(value) {
+    // BUG-002 intencional:
+    // No realiza la conversión automática a kΩ o MΩ.
+    // El sistema muestra siempre el resultado en Ohmios.
+    return value + " Ω";
 }
 
 init();

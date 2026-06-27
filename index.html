@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Resistencias</title>
-    <meta name="description" content="Aplicación para seleccionar colores de resistencias eléctricas">
+    <meta name="description" content="Aplicación para seleccionar colores y visualizar el valor de resistencias eléctricas">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
         <header>
             <h1>Calculadora de Resistencias</h1>
-            <p>HU-01: Selección de colores de resistencia</p>
+            <p>HU-02: Visualización del valor en Ω, kΩ o MΩ</p>
         </header>
 
         <main class="calculator-section">
@@ -49,6 +49,15 @@
                 <h2>Colores seleccionados</h2>
                 <p id="summary-text">Aún no se seleccionaron todos los colores.</p>
             </section>
+
+            <section class="result-display">
+                <h2>Resultado</h2>
+                <div class="result-value" id="result-value">--</div>
+            </section>
+
+            <div class="action-buttons">
+                <button type="button" id="btn-calculate" class="btn btn-primary">Calcular</button>
+            </div>
         </main>
     </div>
 

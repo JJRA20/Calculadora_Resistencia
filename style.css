@@ -70,3 +70,45 @@ header h1 {
 #summary-text {
     color: #e2e8f0;
 }
+
+.result-display {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.result-display h2 {
+    margin-bottom: 1rem;
+    color: #93c5fd;
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #10b981;
+}
+
+.action-buttons {
+    margin-top: 2rem;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 0.75rem;
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
