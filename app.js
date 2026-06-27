@@ -98,10 +98,19 @@ function calculateResistance() {
 }
 
 function formatUnit(value) {
-    // BUG-002 intencional:
-    // No realiza la conversión automática a kΩ o MΩ.
-    // El sistema muestra siempre el resultado en Ohmios.
-    return value + " Ω";
+    if (value >= 1000000) {
+        return formatNumber(value / 1000000) + " MΩ";
+    }
+
+    if (value >= 1000) {
+        return formatNumber(value / 1000) + " kΩ";
+    }
+
+    return formatNumber(value) + " Ω";
+}
+
+function formatNumber(number) {
+    return Number.isInteger(number) ? number.toString() : number.toFixed(2).replace(/\.?0+$/, "");
 }
 
 init();
