@@ -1,0 +1,46 @@
+name: CI/CD Sprint 1 - Calculadora de Resistencias
+
+on:
+  push:
+    branches:
+      - develop
+      - release/sprint-1
+      - main
+
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  build-test-package:
+    name: Compilar, probar y empaquetar
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Verificar archivos del proyecto
+        run: ls -la
+
+      - name: Compilar proyecto
+        run: mvn clean compile
+
+      - name: Ejecutar pruebas unitarias
+        run: mvn test
+
+      - name: Empaquetar aplicacion
+        run: mvn clean package
+
+      - name: Guardar artefacto generado
+        uses: actions/upload-artifact@v4
+        with:
+          name: calculadora-resistencias-sprint1
+          path: target/*.jar
