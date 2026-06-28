@@ -1,0 +1,70 @@
+name: CI/CD Sprint 3 - Calculadora de Resistencias
+
+on:
+  push:
+    branches:
+      - develop
+      - CDR-6
+      - CDR-7
+      - release/sprint-3
+      - main
+
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  validar-y-empaquetar:
+    name: Validar y empaquetar aplicacion web Sprint 3
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Verificar archivos del proyecto
+        run: ls -la
+
+      - name: Validar existencia de index.html
+        run: test -f index.html
+
+      - name: Validar existencia de app.js
+        run: test -f app.js
+
+      - name: Validar existencia de style.css
+        run: test -f style.css
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validar sintaxis JavaScript
+        run: node --check app.js
+
+      - name: Validar elementos de HU-06 tolerancia
+        run: |
+          grep -q "Tolerancia" index.html
+          grep -q "tol" app.js
+
+      - name: Validar elementos de HU-07 limpiar formulario
+        run: |
+          grep -q "btn-clear" index.html
+          grep -q "clearForm" app.js
+
+      - name: Crear carpeta de despliegue
+        run: mkdir dist
+
+      - name: Copiar archivos para despliegue
+        run: |
+          cp index.html dist/
+          cp app.js dist/
+          cp style.css dist/
+          cp README.md dist/ || true
+
+      - name: Guardar artefacto generado
+        uses: actions/upload-artifact@v4
+        with:
+          name: calculadora-resistencias-sprint3
+          path: dist/
