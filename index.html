@@ -11,69 +11,94 @@
     <div class="app-container">
         <header>
             <h1>Calculadora de Resistencias</h1>
-            <p>HU-05: Validaciones de campos obligatorios</p>
+            <p>HU-06: Tabla de colores y valores</p>
         </header>
 
-        <main class="calculator-section">
-            <div id="error-message" class="error-message hidden">
-                Debe seleccionar todas las bandas
-            </div>
-
-            <form id="resistor-form">
-                <div class="band-group">
-                    <label for="band1">Banda 1</label>
-                    <select id="band1" class="color-select">
-                        <option value="" disabled selected>Seleccione un color...</option>
-                    </select>
+        <main class="main-content">
+            <section class="calculator-section">
+                <div id="error-message" class="error-message hidden">
+                    Debe seleccionar todas las bandas
                 </div>
 
-                <div class="band-group">
-                    <label for="band2">Banda 2</label>
-                    <select id="band2" class="color-select">
-                        <option value="" disabled selected>Seleccione un color...</option>
-                    </select>
-                </div>
+                <form id="resistor-form">
+                    <div class="band-group">
+                        <label for="band1">Banda 1</label>
+                        <select id="band1" class="color-select">
+                            <option value="" disabled selected>Seleccione un color...</option>
+                        </select>
+                    </div>
 
-                <div class="band-group">
-                    <label for="band4">Multiplicador</label>
-                    <select id="band4" class="color-select">
-                        <option value="" disabled selected>Seleccione un color...</option>
-                    </select>
-                </div>
+                    <div class="band-group">
+                        <label for="band2">Banda 2</label>
+                        <select id="band2" class="color-select">
+                            <option value="" disabled selected>Seleccione un color...</option>
+                        </select>
+                    </div>
 
-                <div class="band-group">
-                    <label for="band5">Tolerancia</label>
-                    <select id="band5" class="color-select">
-                        <option value="" disabled selected>Seleccione un color...</option>
-                    </select>
-                </div>
-            </form>
+                    <div class="band-group">
+                        <label for="band4">Multiplicador</label>
+                        <select id="band4" class="color-select">
+                            <option value="" disabled selected>Seleccione un color...</option>
+                        </select>
+                    </div>
 
-            <section class="selection-summary">
-                <h2>Colores seleccionados</h2>
-                <p id="summary-text">Aún no se seleccionaron todos los colores.</p>
+                    <div class="band-group">
+                        <label for="band5">Tolerancia</label>
+                        <select id="band5" class="color-select">
+                            <option value="" disabled selected>Seleccione un color...</option>
+                        </select>
+                    </div>
+                </form>
+
+                <section class="selection-summary">
+                    <h2>Colores seleccionados</h2>
+                    <p id="summary-text">Aún no se seleccionaron todos los colores.</p>
+                </section>
+
+                <section class="result-display">
+                    <h2>Resultado</h2>
+                    <div class="result-value" id="result-value">--</div>
+                    <p class="result-help">El resultado muestra el valor calculado y la tolerancia permitida.</p>
+                </section>
+
+                <section class="history-section">
+                    <div class="history-header">
+                        <h2>Historial</h2>
+                        <button type="button" id="btn-clear-history" class="btn btn-text">Borrar</button>
+                    </div>
+                    <ul id="history-list" class="history-list">
+                        <li class="empty-history">No hay cálculos aún.</li>
+                    </ul>
+                </section>
+
+                <div class="action-buttons">
+                    <button type="button" id="btn-calculate" class="btn btn-primary">Calcular</button>
+                    <button type="button" id="btn-clear" class="btn btn-secondary">Limpiar</button>
+                </div>
             </section>
 
-            <section class="result-display">
-                <h2>Resultado</h2>
-                <div class="result-value" id="result-value">--</div>
-                <p class="result-help">El resultado muestra el valor calculado y la tolerancia permitida.</p>
-            </section>
+            <aside class="table-section">
+                <h2>Código de Colores</h2>
+                <p class="table-description">
+                    Consulta el valor de cada color según su dígito, multiplicador y tolerancia.
+                </p>
 
-            <section class="history-section">
-                <div class="history-header">
-                    <h2>Historial</h2>
-                    <button type="button" id="btn-clear-history" class="btn btn-text">Borrar</button>
+                <div class="table-wrapper">
+                    <table id="reference-table">
+                        <thead>
+                            <tr>
+                                <th>Color</th>
+                                <th>Valor</th>
+                                <th>Multiplicador</th>
+                                <th>Tolerancia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Se genera desde app.js -->
+                        </tbody>
+                    </table>
                 </div>
-                <ul id="history-list" class="history-list">
-                    <li class="empty-history">No hay cálculos aún.</li>
-                </ul>
-            </section>
-
-            <div class="action-buttons">
-                <button type="button" id="btn-calculate" class="btn btn-primary">Calcular</button>
-                <button type="button" id="btn-clear" class="btn btn-secondary">Limpiar</button>
-            </div>
+            </aside>
         </main>
     </div>
 

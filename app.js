@@ -24,11 +24,13 @@ const btnClear = document.getElementById("btn-clear");
 const errorMessage = document.getElementById("error-message");
 const historyList = document.getElementById("history-list");
 const btnClearHistory = document.getElementById("btn-clear-history");
+const tableBody = document.querySelector("#reference-table tbody");
 
 let historyArr = [];
 
 function init() {
     populateSelects();
+    populateTable();
     setupEventListeners();
     renderHistory();
 }
@@ -55,6 +57,26 @@ function populateSelect(selectElement, options, type) {
         option.dataset.hex = color.hex;
 
         selectElement.appendChild(option);
+    });
+}
+
+function populateTable() {
+    colorData.forEach(color => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>
+                <div class="color-cell">
+                    <span class="color-dot" style="background-color: ${color.hex};"></span>
+                    ${color.name}
+                </div>
+            </td>
+            <td>${color.digit !== null ? color.digit : "-"}</td>
+            <td>${formatMultiplier(color.multiplier)}</td>
+            <td>${color.tol !== null ? "±" + formatNumber(color.tol) + "%" : "-"}</td>
+        `;
+
+        tableBody.appendChild(row);
     });
 }
 
@@ -177,6 +199,22 @@ function formatUnit(value) {
     }
 
     return formatNumber(value) + " Ω";
+}
+
+function formatMultiplier(multiplier) {
+    if (multiplier === null) {
+        return "-";
+    }
+
+    if (multiplier >= 1000000) {
+        return "x " + formatNumber(multiplier / 1000000) + "M";
+    }
+
+    if (multiplier >= 1000) {
+        return "x " + formatNumber(multiplier / 1000) + "k";
+    }
+
+    return "x " + multiplier;
 }
 
 function formatNumber(number) {
