@@ -1,0 +1,68 @@
+name: CI/CD Sprint 2 - Calculadora de Resistencias
+
+on:
+  push:
+    branches:
+      - develop
+      - CDR-4
+      - CDR-5
+      - CDR-32
+      - CDR-33
+      - release/sprint-2
+      - main
+
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  validar-y-empaquetar:
+    name: Validar y empaquetar aplicacion web Sprint 2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar codigo
+        uses: actions/checkout@v4
+
+      - name: Verificar archivos del proyecto
+        run: ls -la
+
+      - name: Validar existencia de index.html
+        run: test -f index.html
+
+      - name: Validar existencia de app.js
+        run: test -f app.js
+
+      - name: Validar existencia de style.css
+        run: test -f style.css
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validar sintaxis de app.js
+        run: node --check app.js
+
+      - name: Validar referencia a tolerancia HU-04
+        run: grep -i "toler" app.js
+
+      - name: Validar referencia a rango HU-05
+        run: grep -Ei "min|max|rango" app.js
+
+      - name: Crear carpeta de despliegue
+        run: mkdir dist
+
+      - name: Copiar archivos para despliegue
+        run: |
+          cp index.html dist/
+          cp app.js dist/
+          cp style.css dist/
+          cp README.md dist/ || true
+
+      - name: Guardar artefacto generado
+        uses: actions/upload-artifact@v4
+        with:
+          name: calculadora-resistencias-sprint2
+          path: dist/
