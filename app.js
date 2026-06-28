@@ -13,10 +13,16 @@ const colorData = [
     { name: "Plateado", hex: "#9ca3af", digit: null, multiplier: 0.01, tol: 10, textDark: true }
 ];
 
+const mode4 = document.getElementById("mode4");
+const mode5 = document.getElementById("mode5");
+const band3Container = document.getElementById("band3-container");
+
 const band1 = document.getElementById("band1");
 const band2 = document.getElementById("band2");
+const band3 = document.getElementById("band3");
 const band4 = document.getElementById("band4");
 const band5 = document.getElementById("band5");
+
 const summaryText = document.getElementById("summary-text");
 const resultValue = document.getElementById("result-value");
 const btnCalculate = document.getElementById("btn-calculate");
@@ -27,6 +33,7 @@ const btnClearHistory = document.getElementById("btn-clear-history");
 const tableBody = document.querySelector("#reference-table tbody");
 
 let historyArr = [];
+let is4Band = true;
 
 function init() {
     populateSelects();
@@ -42,6 +49,7 @@ function populateSelects() {
 
     populateSelect(band1, digitColors, "digit");
     populateSelect(band2, digitColors, "digit");
+    populateSelect(band3, digitColors, "digit");
     populateSelect(band4, multiplierColors, "multiplier");
     populateSelect(band5, toleranceColors, "tol");
 }
@@ -81,7 +89,15 @@ function populateTable() {
 }
 
 function setupEventListeners() {
-    [band1, band2, band4, band5].forEach(select => {
+    mode4.addEventListener("change", function () {
+        switchMode(true);
+    });
+
+    mode5.addEventListener("change", function () {
+        switchMode(false);
+    });
+
+    [band1, band2, band3, band4, band5].forEach(select => {
         select.addEventListener("change", function () {
             updateSelectStyle(select);
             updateSummary();
@@ -97,6 +113,26 @@ function setupEventListeners() {
     btnClearHistory.addEventListener("click", clearHistory);
 }
 
+function switchMode(to4Band) {
+    is4Band = to4Band;
+
+    if (is4Band) {
+        band3Container.style.display = "none";
+        band3.value = "";
+        band3.style.backgroundColor = "#0f172a";
+        band3.style.color = "#f8fafc";
+    } else {
+        band3Container.style.display = "block";
+    }
+
+    resultValue.textContent = "--";
+    updateSummary();
+
+    if (validateForm()) {
+        hideError();
+    }
+}
+
 function updateSelectStyle(selectElement) {
     const selectedColor = colorData.find(color => color.name === selectElement.value);
 
@@ -107,17 +143,31 @@ function updateSelectStyle(selectElement) {
 }
 
 function updateSummary() {
-    if (band1.value && band2.value && band4.value && band5.value) {
-        summaryText.textContent =
-            `Selección actual: Banda 1 ${band1.value}, Banda 2 ${band2.value}, ` +
-            `Multiplicador ${band4.value}, Tolerancia ${band5.value}.`;
+    if (validateForm()) {
+        if (is4Band) {
+            summaryText.textContent =
+                `Modo 4 bandas: Banda 1 ${band1.value}, Banda 2 ${band2.value}, ` +
+                `Multiplicador ${band4.value}, Tolerancia ${band5.value}.`;
+        } else {
+            summaryText.textContent =
+                `Modo 5 bandas: Banda 1 ${band1.value}, Banda 2 ${band2.value}, Banda 3 ${band3.value}, ` +
+                `Multiplicador ${band4.value}, Tolerancia ${band5.value}.`;
+        }
     } else {
         summaryText.textContent = "Aún no se seleccionaron todos los colores.";
     }
 }
 
 function validateForm() {
-    return Boolean(band1.value && band2.value && band4.value && band5.value);
+    if (!band1.value || !band2.value || !band4.value || !band5.value) {
+        return false;
+    }
+
+    if (!is4Band && !band3.value) {
+        return false;
+    }
+
+    return true;
 }
 
 function showError() {
@@ -143,7 +193,15 @@ function calculateResistance() {
     const multiplier = parseFloat(band4.options[band4.selectedIndex].dataset.multiplier);
     const tolerance = parseFloat(band5.options[band5.selectedIndex].dataset.tol);
 
-    const baseValue = (digit1 * 10) + digit2;
+    let baseValue;
+
+    if (is4Band) {
+        baseValue = (digit1 * 10) + digit2;
+    } else {
+        const digit3 = parseInt(band3.options[band3.selectedIndex].dataset.digit);
+        baseValue = (digit1 * 100) + (digit2 * 10) + digit3;
+    }
+
     const finalValue = baseValue * multiplier;
     const resultText = `${formatUnit(finalValue)} ±${formatNumber(tolerance)}%`;
 
@@ -154,10 +212,14 @@ function calculateResistance() {
 function clearForm() {
     document.getElementById("resistor-form").reset();
 
-    [band1, band2, band4, band5].forEach(select => {
+    [band1, band2, band3, band4, band5].forEach(select => {
         select.style.backgroundColor = "#0f172a";
         select.style.color = "#f8fafc";
     });
+
+    if (is4Band) {
+        band3Container.style.display = "none";
+    }
 
     summaryText.textContent = "Aún no se seleccionaron todos los colores.";
     resultValue.textContent = "--";
