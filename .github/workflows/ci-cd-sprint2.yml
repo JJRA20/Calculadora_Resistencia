@@ -45,11 +45,23 @@ jobs:
       - name: Validar sintaxis de app.js
         run: node --check app.js
 
-      - name: Validar referencia a tolerancia HU-04
-        run: grep -i "toler" app.js
+      - name: Validar selector de tolerancia HU-04
+        run: grep -Ei "band5|Tolerancia|tol" app.js index.html
 
-      - name: Validar referencia a rango HU-05
-        run: grep -Ei "min|max|rango" app.js
+      - name: Validar calculo con tolerancia HU-04
+        run: grep -Ei "tolerance|tolerancia|tol|±" app.js index.html
+
+      - name: Validar mensaje de campos obligatorios HU-05
+        run: grep -Ei "Debe seleccionar todas las bandas|error-message|campos obligatorios" app.js index.html
+
+      - name: Validar funcion de formulario HU-05
+        run: grep -Ei "validateForm|showError|hideError" app.js
+
+      - name: Validar boton calcular
+        run: grep -Ei "btn-calculate|calculateResistance" app.js index.html
+
+      - name: Validar boton limpiar
+        run: grep -Ei "btn-clear|clearForm" app.js index.html
 
       - name: Crear carpeta de despliegue
         run: mkdir dist
