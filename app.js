@@ -109,7 +109,7 @@ function clearForm() {
     });
 
     summaryText.textContent = "Aún no se seleccionaron todos los colores.";
-    resultValue.textContent = "--";
+
 }
 
 function formatUnit(value) {
