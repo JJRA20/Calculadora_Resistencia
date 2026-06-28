@@ -102,10 +102,12 @@ header p {
 
 .action-buttons {
     margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
 }
 
 .btn {
-    width: 100%;
+    flex: 1;
     padding: 0.85rem;
     border-radius: 0.75rem;
     border: none;
@@ -121,4 +123,13 @@ header p {
 
 .btn-primary:hover {
     background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #475569;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #334155;
 }
