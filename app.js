@@ -110,10 +110,6 @@ function clearForm() {
 
     summaryText.textContent = "Aún no se seleccionaron todos los colores.";
 
-    // BUG-003 intencional:
-    // El botón Limpiar borra las bandas seleccionadas,
-    // pero mantiene visible el resultado anterior.
-    // resultValue.textContent = "--";
 }
 
 function formatUnit(value) {
