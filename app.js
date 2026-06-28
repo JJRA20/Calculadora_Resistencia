@@ -21,10 +21,16 @@ const summaryText = document.getElementById("summary-text");
 const resultValue = document.getElementById("result-value");
 const btnCalculate = document.getElementById("btn-calculate");
 const btnClear = document.getElementById("btn-clear");
+const errorMessage = document.getElementById("error-message");
+const historyList = document.getElementById("history-list");
+const btnClearHistory = document.getElementById("btn-clear-history");
+
+let historyArr = [];
 
 function init() {
     populateSelects();
     setupEventListeners();
+    renderHistory();
 }
 
 function populateSelects() {
@@ -57,11 +63,16 @@ function setupEventListeners() {
         select.addEventListener("change", function () {
             updateSelectStyle(select);
             updateSummary();
+
+            if (validateForm()) {
+                hideError();
+            }
         });
     });
 
     btnCalculate.addEventListener("click", calculateResistance);
     btnClear.addEventListener("click", clearForm);
+    btnClearHistory.addEventListener("click", clearHistory);
 }
 
 function updateSelectStyle(selectElement) {
@@ -83,11 +94,31 @@ function updateSummary() {
     }
 }
 
+function validateForm() {
+    return Boolean(band1.value && band2.value && band4.value && band5.value);
+}
+
+function showError() {
+    errorMessage.textContent = "Debe seleccionar todas las bandas";
+    errorMessage.classList.remove("hidden");
+}
+
+function hideError() {
+    errorMessage.classList.add("hidden");
+}
+
 function calculateResistance() {
-    if (!band1.value || !band2.value || !band4.value || !band5.value) {
-        resultValue.textContent = "Complete todas las bandas";
+    if (!validateForm()) {
+        showError();
+
+        // BUG-005 intencional:
+        // El sistema no calcula el valor, pero registra el intento fallido en el historial.
+        addToHistory("Cálculo fallido - datos incompletos");
+
         return;
     }
+
+    hideError();
 
     const digit1 = parseInt(band1.options[band1.selectedIndex].dataset.digit);
     const digit2 = parseInt(band2.options[band2.selectedIndex].dataset.digit);
@@ -96,8 +127,10 @@ function calculateResistance() {
 
     const baseValue = (digit1 * 10) + digit2;
     const finalValue = baseValue * multiplier;
+    const resultText = `${formatUnit(finalValue)} ±${formatNumber(tolerance)}%`;
 
-    resultValue.textContent = `${formatUnit(finalValue)} ±${formatNumber(tolerance)}%`;
+    resultValue.textContent = resultText;
+    addToHistory(resultText);
 }
 
 function clearForm() {
@@ -109,7 +142,33 @@ function clearForm() {
     });
 
     summaryText.textContent = "Aún no se seleccionaron todos los colores.";
+    resultValue.textContent = "--";
+    hideError();
+}
 
+function addToHistory(resultText) {
+    historyArr.unshift(resultText);
+    renderHistory();
+}
+
+function renderHistory() {
+    historyList.innerHTML = "";
+
+    if (historyArr.length === 0) {
+        historyList.innerHTML = `<li class="empty-history">No hay cálculos aún.</li>`;
+        return;
+    }
+
+    historyArr.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        historyList.appendChild(li);
+    });
+}
+
+function clearHistory() {
+    historyArr = [];
+    renderHistory();
 }
 
 function formatUnit(value) {
