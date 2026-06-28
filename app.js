@@ -110,11 +110,7 @@ function hideError() {
 function calculateResistance() {
     if (!validateForm()) {
         showError();
-
-        // BUG-005 intencional:
-        // El sistema no calcula el valor, pero registra el intento fallido en el historial.
-        addToHistory("Cálculo fallido - datos incompletos");
-
+        resultValue.textContent = "--";
         return;
     }
 
