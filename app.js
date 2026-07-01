@@ -27,13 +27,16 @@ const summaryText = document.getElementById("summary-text");
 const resultValue = document.getElementById("result-value");
 const btnCalculate = document.getElementById("btn-calculate");
 const btnClear = document.getElementById("btn-clear");
+const btnCopy = document.getElementById("btn-copy");
 const errorMessage = document.getElementById("error-message");
 const historyList = document.getElementById("history-list");
 const btnClearHistory = document.getElementById("btn-clear-history");
 const tableBody = document.querySelector("#reference-table tbody");
+const toast = document.getElementById("toast");
 
 let historyArr = [];
 let is4Band = true;
+let currentResultStr = "";
 
 function init() {
     populateSelects();
@@ -63,7 +66,6 @@ function populateSelect(selectElement, options, type) {
         option.style.color = color.textDark ? "#000000" : "#ffffff";
         option.dataset[type] = color[type];
         option.dataset.hex = color.hex;
-
         selectElement.appendChild(option);
     });
 }
@@ -111,6 +113,7 @@ function setupEventListeners() {
     btnCalculate.addEventListener("click", calculateResistance);
     btnClear.addEventListener("click", clearForm);
     btnClearHistory.addEventListener("click", clearHistory);
+    btnCopy.addEventListener("click", copyResult);
 }
 
 function switchMode(to4Band) {
@@ -126,6 +129,7 @@ function switchMode(to4Band) {
     }
 
     resultValue.textContent = "--";
+    currentResultStr = "";
     updateSummary();
 
     if (validateForm()) {
@@ -183,6 +187,7 @@ function calculateResistance() {
     if (!validateForm()) {
         showError();
         resultValue.textContent = "--";
+        currentResultStr = "";
         return;
     }
 
@@ -194,6 +199,7 @@ function calculateResistance() {
     const tolerance = parseFloat(band5.options[band5.selectedIndex].dataset.tol);
 
     let baseValue;
+    const selectedColors = getSelectedColors();
 
     if (is4Band) {
         baseValue = (digit1 * 10) + digit2;
@@ -206,7 +212,29 @@ function calculateResistance() {
     const resultText = `${formatUnit(finalValue)} ±${formatNumber(tolerance)}%`;
 
     resultValue.textContent = resultText;
-    addToHistory(resultText);
+    currentResultStr = resultText;
+
+    addToHistory({
+        mode: is4Band ? "4 bandas" : "5 bandas",
+        colors: selectedColors,
+        resultText: resultText
+    });
+}
+
+function getSelectedColors() {
+    const colors = [
+        band1.options[band1.selectedIndex].dataset.hex,
+        band2.options[band2.selectedIndex].dataset.hex
+    ];
+
+    if (!is4Band) {
+        colors.push(band3.options[band3.selectedIndex].dataset.hex);
+    }
+
+    colors.push(band4.options[band4.selectedIndex].dataset.hex);
+    colors.push(band5.options[band5.selectedIndex].dataset.hex);
+
+    return colors;
 }
 
 function clearForm() {
@@ -223,11 +251,35 @@ function clearForm() {
 
     summaryText.textContent = "Aún no se seleccionaron todos los colores.";
     resultValue.textContent = "--";
+    currentResultStr = "";
     hideError();
 }
 
-function addToHistory(resultText) {
-    historyArr.unshift(resultText);
+function copyResult() {
+    if (!currentResultStr) {
+        showToast("No hay resultado disponible para copiar");
+        return;
+    }
+
+    navigator.clipboard.writeText(currentResultStr).then(() => {
+        showToast("Resultado copiado con éxito");
+    }).catch(error => {
+        console.error("Error al copiar el resultado:", error);
+        showToast("No se pudo copiar el resultado");
+    });
+}
+
+function showToast(message) {
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+
+    setTimeout(() => {
+        toast.classList.add("hidden");
+    }, 2500);
+}
+
+function addToHistory(historyItem) {
+    historyArr.unshift(historyItem);
     renderHistory();
 }
 
@@ -241,7 +293,30 @@ function renderHistory() {
 
     historyArr.forEach(item => {
         const li = document.createElement("li");
-        li.textContent = item;
+        li.className = "history-item";
+
+        const colorDiv = document.createElement("div");
+        colorDiv.className = "history-colors";
+
+        item.colors.forEach(color => {
+            const dot = document.createElement("span");
+            dot.className = "color-dot-small";
+            dot.style.backgroundColor = color;
+            colorDiv.appendChild(dot);
+        });
+
+        const resultSpan = document.createElement("span");
+        resultSpan.className = "history-result";
+        resultSpan.textContent = item.resultText;
+
+        const modeSpan = document.createElement("span");
+        modeSpan.className = "history-mode";
+        modeSpan.textContent = `Modo: ${item.mode}`;
+
+        li.appendChild(colorDiv);
+        li.appendChild(resultSpan);
+        li.appendChild(modeSpan);
+
         historyList.appendChild(li);
     });
 }

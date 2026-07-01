@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Resistencias</title>
-    <meta name="description" content="Aplicación para calcular resistencias eléctricas de 4 y 5 bandas">
+    <meta name="description" content="Aplicación responsive para calcular resistencias eléctricas de 4 y 5 bandas">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
+        <div id="toast" class="toast hidden">¡Copiado con éxito!</div>
+
         <header>
             <h1>Calculadora de Resistencias</h1>
-            <p>HU-07: Cálculo de resistencias de 5 bandas</p>
+            <p>HU-10: Diseño responsive para celular, tablet y computadora</p>
 
             <div class="mode-toggle">
                 <input type="radio" id="mode4" name="bandMode" value="4" checked>
@@ -89,6 +91,7 @@
                 <div class="action-buttons">
                     <button type="button" id="btn-calculate" class="btn btn-primary">Calcular</button>
                     <button type="button" id="btn-clear" class="btn btn-secondary">Limpiar</button>
+                    <button type="button" id="btn-copy" class="btn btn-outline">Copiar resultado</button>
                 </div>
             </section>
 

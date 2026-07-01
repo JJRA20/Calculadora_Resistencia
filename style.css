@@ -13,8 +13,10 @@ body {
 }
 
 .app-container {
+    width: 100%;
     max-width: 1100px;
     margin: 0 auto;
+    position: relative;
 }
 
 header {
@@ -25,6 +27,7 @@ header {
 header h1 {
     margin-bottom: 0.5rem;
     color: #60a5fa;
+    font-size: 2.2rem;
 }
 
 header p {
@@ -62,6 +65,7 @@ header p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    position: relative;
 }
 
 .calculator-section,
@@ -99,7 +103,7 @@ header p {
 
 .color-select {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.85rem;
     border-radius: 0.5rem;
     border: 1px solid #475569;
     background-color: #0f172a;
@@ -140,6 +144,7 @@ header p {
     font-size: 2rem;
     font-weight: bold;
     color: #10b981;
+    word-break: break-word;
 }
 
 .result-help {
@@ -159,6 +164,7 @@ header p {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -168,6 +174,8 @@ header p {
 
 .history-list {
     list-style: none;
+    max-height: 260px;
+    overflow-y: auto;
 }
 
 .history-list li {
@@ -182,14 +190,46 @@ header p {
     text-align: center;
 }
 
+.history-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.history-colors {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.history-result {
+    font-weight: bold;
+    color: #10b981;
+}
+
+.history-mode {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+}
+
+.color-dot-small {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #64748b;
+}
+
 .action-buttons {
     margin-top: 2rem;
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .btn {
     flex: 1;
+    min-width: 130px;
     padding: 0.85rem;
     border-radius: 0.75rem;
     border: none;
@@ -214,6 +254,16 @@ header p {
 
 .btn-secondary:hover {
     background-color: #334155;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #64748b;
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .btn-text {
@@ -243,6 +293,7 @@ header p {
 
 table {
     width: 100%;
+    min-width: 420px;
     border-collapse: collapse;
     font-size: 0.9rem;
 }
@@ -272,8 +323,104 @@ th {
     border: 1px solid #64748b;
 }
 
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #10b981;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+/* Responsive tablet */
 @media (max-width: 900px) {
     .main-content {
         grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .calculator-section,
+    .table-section {
+        padding: 1.5rem;
+    }
+}
+
+/* Responsive móvil corregido */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 0.9rem;
+    }
+
+    .mode-toggle {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .mode-toggle label {
+        padding: 0.5rem 0.85rem;
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .calculator-section,
+    .table-section {
+        width: 100%;
+        padding: 1rem;
+        position: static;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .result-value {
+        font-size: 1.5rem;
+        word-break: break-word;
+    }
+
+    .history-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 420px;
+    }
+
+    .toast {
+        width: calc(100% - 2rem);
+        text-align: center;
+        padding: 0.75rem 1rem;
     }
 }
