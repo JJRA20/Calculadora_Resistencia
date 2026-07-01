@@ -13,6 +13,7 @@ body {
 }
 
 .app-container {
+    width: 100%;
     max-width: 1100px;
     margin: 0 auto;
     position: relative;
@@ -26,6 +27,7 @@ header {
 header h1 {
     margin-bottom: 0.5rem;
     color: #60a5fa;
+    font-size: 2.2rem;
 }
 
 header p {
@@ -63,6 +65,7 @@ header p {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
+    position: relative;
 }
 
 .calculator-section,
@@ -100,7 +103,7 @@ header p {
 
 .color-select {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.85rem;
     border-radius: 0.5rem;
     border: 1px solid #475569;
     background-color: #0f172a;
@@ -141,6 +144,7 @@ header p {
     font-size: 2rem;
     font-weight: bold;
     color: #10b981;
+    word-break: break-word;
 }
 
 .result-help {
@@ -160,6 +164,7 @@ header p {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
@@ -195,6 +200,7 @@ header p {
     display: flex;
     gap: 0.35rem;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .history-result {
@@ -287,6 +293,7 @@ header p {
 
 table {
     width: 100%;
+    min-width: 420px;
     border-collapse: collapse;
     font-size: 0.9rem;
 }
@@ -329,8 +336,67 @@ th {
     z-index: 1000;
 }
 
+/* Responsive tablet */
 @media (max-width: 900px) {
     .main-content {
         grid-template-columns: 1fr;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    .calculator-section,
+    .table-section {
+        padding: 1.5rem;
+    }
+}
+
+/* Responsive móvil con BUG-004 intencional */
+@media (max-width: 600px) {
+    body {
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .mode-toggle {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .mode-toggle label {
+        padding: 0.5rem 0.85rem;
+        font-size: 0.9rem;
+    }
+
+    .calculator-section {
+        padding: 1rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .result-value {
+        font-size: 1.5rem;
+    }
+
+    /* BUG-004 intencional:
+       En móvil, la sección de tabla puede superponerse con el resultado.
+       Se deja este comportamiento para registrar el bug en Jira.
+    */
+    .table-section {
+        position: absolute;
+        top: 420px;
+        left: 0;
+        width: 100%;
+        z-index: 10;
     }
 }
