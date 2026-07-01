@@ -148,6 +148,7 @@ header p {
     font-size: 0.9rem;
 }
 
+/* Historial */
 .history-section {
     margin-top: 2rem;
     padding: 1rem;
@@ -168,6 +169,8 @@ header p {
 
 .history-list {
     list-style: none;
+    max-height: 260px;
+    overflow-y: auto;
 }
 
 .history-list li {
@@ -180,6 +183,35 @@ header p {
 .empty-history {
     color: #cbd5e1;
     text-align: center;
+}
+
+.history-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.history-colors {
+    display: flex;
+    gap: 0.35rem;
+    align-items: center;
+}
+
+.history-result {
+    font-weight: bold;
+    color: #10b981;
+}
+
+.history-mode {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+}
+
+.color-dot-small {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #64748b;
 }
 
 .action-buttons {
