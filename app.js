@@ -257,17 +257,15 @@ function clearForm() {
 
 function copyResult() {
     if (!currentResultStr) {
-        // BUG-006 intencional:
-        // Si no existe resultado, no se muestra mensaje al usuario.
+        showToast("No hay resultado disponible para copiar");
         return;
     }
 
     navigator.clipboard.writeText(currentResultStr).then(() => {
-        // BUG-006 intencional:
-        // El resultado se copia, pero no se muestra confirmación visual.
-        // showToast("Resultado copiado con éxito");
+        showToast("Resultado copiado con éxito");
     }).catch(error => {
         console.error("Error al copiar el resultado:", error);
+        showToast("No se pudo copiar el resultado");
     });
 }
 
