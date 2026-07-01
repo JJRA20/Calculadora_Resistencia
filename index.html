@@ -9,9 +9,11 @@
 </head>
 <body>
     <div class="app-container">
+        <div id="toast" class="toast hidden">¡Copiado con éxito!</div>
+
         <header>
             <h1>Calculadora de Resistencias</h1>
-            <p>HU-08: Historial de cálculos realizados</p>
+            <p>HU-09: Copiar resultado al portapapeles</p>
 
             <div class="mode-toggle">
                 <input type="radio" id="mode4" name="bandMode" value="4" checked>
@@ -89,6 +91,7 @@
                 <div class="action-buttons">
                     <button type="button" id="btn-calculate" class="btn btn-primary">Calcular</button>
                     <button type="button" id="btn-clear" class="btn btn-secondary">Limpiar</button>
+                    <button type="button" id="btn-copy" class="btn btn-outline">Copiar resultado</button>
                 </div>
             </section>
 

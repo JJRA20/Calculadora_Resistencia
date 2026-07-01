@@ -15,6 +15,7 @@ body {
 .app-container {
     max-width: 1100px;
     margin: 0 auto;
+    position: relative;
 }
 
 header {
@@ -148,7 +149,6 @@ header p {
     font-size: 0.9rem;
 }
 
-/* Historial */
 .history-section {
     margin-top: 2rem;
     padding: 1rem;
@@ -218,10 +218,12 @@ header p {
     margin-top: 2rem;
     display: flex;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .btn {
     flex: 1;
+    min-width: 130px;
     padding: 0.85rem;
     border-radius: 0.75rem;
     border: none;
@@ -246,6 +248,16 @@ header p {
 
 .btn-secondary:hover {
     background-color: #334155;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: white;
+    border: 1px solid #64748b;
+}
+
+.btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .btn-text {
@@ -302,6 +314,19 @@ th {
     height: 16px;
     border-radius: 50%;
     border: 1px solid #64748b;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #10b981;
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 999px;
+    font-weight: bold;
+    z-index: 1000;
 }
 
 @media (max-width: 900px) {

@@ -27,13 +27,16 @@ const summaryText = document.getElementById("summary-text");
 const resultValue = document.getElementById("result-value");
 const btnCalculate = document.getElementById("btn-calculate");
 const btnClear = document.getElementById("btn-clear");
+const btnCopy = document.getElementById("btn-copy");
 const errorMessage = document.getElementById("error-message");
 const historyList = document.getElementById("history-list");
 const btnClearHistory = document.getElementById("btn-clear-history");
 const tableBody = document.querySelector("#reference-table tbody");
+const toast = document.getElementById("toast");
 
 let historyArr = [];
 let is4Band = true;
+let currentResultStr = "";
 
 function init() {
     populateSelects();
@@ -110,6 +113,7 @@ function setupEventListeners() {
     btnCalculate.addEventListener("click", calculateResistance);
     btnClear.addEventListener("click", clearForm);
     btnClearHistory.addEventListener("click", clearHistory);
+    btnCopy.addEventListener("click", copyResult);
 }
 
 function switchMode(to4Band) {
@@ -125,6 +129,7 @@ function switchMode(to4Band) {
     }
 
     resultValue.textContent = "--";
+    currentResultStr = "";
     updateSummary();
 
     if (validateForm()) {
@@ -182,6 +187,7 @@ function calculateResistance() {
     if (!validateForm()) {
         showError();
         resultValue.textContent = "--";
+        currentResultStr = "";
         return;
     }
 
@@ -206,6 +212,7 @@ function calculateResistance() {
     const resultText = `${formatUnit(finalValue)} ±${formatNumber(tolerance)}%`;
 
     resultValue.textContent = resultText;
+    currentResultStr = resultText;
 
     addToHistory({
         mode: is4Band ? "4 bandas" : "5 bandas",
@@ -244,7 +251,33 @@ function clearForm() {
 
     summaryText.textContent = "Aún no se seleccionaron todos los colores.";
     resultValue.textContent = "--";
+    currentResultStr = "";
     hideError();
+}
+
+function copyResult() {
+    if (!currentResultStr) {
+        // BUG-006 intencional:
+        // Si no existe resultado, no se muestra mensaje al usuario.
+        return;
+    }
+
+    navigator.clipboard.writeText(currentResultStr).then(() => {
+        // BUG-006 intencional:
+        // El resultado se copia, pero no se muestra confirmación visual.
+        // showToast("Resultado copiado con éxito");
+    }).catch(error => {
+        console.error("Error al copiar el resultado:", error);
+    });
+}
+
+function showToast(message) {
+    toast.textContent = message;
+    toast.classList.remove("hidden");
+
+    setTimeout(() => {
+        toast.classList.add("hidden");
+    }, 2500);
 }
 
 function addToHistory(historyItem) {
